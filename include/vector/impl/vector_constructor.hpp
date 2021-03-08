@@ -11,6 +11,7 @@
 
 #include "../vector.h"
 #include <cstring>
+#include <memory>
 
 namespace dsa
 {
@@ -25,23 +26,37 @@ namespace dsa
     Vector<T, _Size_t>::Vector(const T* arr, const _Size_t& length)
         : Vector(length)
     {
-        for(size_type i = 0; i < length; i++) { _basic_ptr[i] = arr[i]; _size_used++; }
+        reserve();
+
+        for(size_type i = 0; i < length; i++)
+        {
+            _basic_ptr[i] = arr[i];
+            _size_used++;
+        }
     }
 
     template<typename T, typename _Size_t>
     Vector<T, _Size_t>::Vector(const T& init_value, const _Size_t& length)
         : Vector(length)
     {
-        for(size_type i = 0; i < length; i++) { _basic_ptr[i] = init_value; _size_used++; }
+        reserve();
+
+        for(size_type i = 0; i < length; i++)
+        {
+            _basic_ptr[i] = init_value; _size_used++;
+        }
     }
 
     template<typename T, typename _Size_t>
     Vector<T, _Size_t>::Vector(const Vector& v)
         : _size_of_cap(v._size_of_cap), _size_used(v._size_used)
     {
-        _basic_ptr = new value_type[_size_of_cap];
+        reserve();
 
-        for(size_type i = 0; i < _size_used; i++) { _basic_ptr[i] = v[i]; }
+        for(size_type i = 0; i < _size_used; i++)
+        {
+            _basic_ptr[i] = v[i];
+        }
     }
 
     template<typename T, typename _Size_t>
@@ -54,7 +69,14 @@ namespace dsa
     template<typename T, typename _Size_t>
     Vector<T, _Size_t>::~Vector(void)
     {
-        if(_basic_ptr != nullptr) delete[] _basic_ptr;
+        if(_basic_ptr == nullptr) { return ; }
+
+        for(auto p = _basic_ptr + _size_used; p != _basic_ptr;)
+        {
+            alloc.destroy(--p);
+        }
+
+        alloc.deallocate(_basic_ptr, _size_of_cap);
 
         _size_of_cap = 0;
         _size_used = 0;
