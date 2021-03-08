@@ -7,6 +7,9 @@
  #ifndef __BDS_STACK_IMPL_H
  #define __BDS_STACK_IMPL_H
 
+ #include "impl/stack_constructor.hpp"
+ #include "impl/stack_access.hpp"
+
  #endif /*__BDS_STACK_IMPL_H*/
 
  // EOF

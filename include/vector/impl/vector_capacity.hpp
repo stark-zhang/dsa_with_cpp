@@ -56,20 +56,26 @@ namespace dsa
 
         auto expected_size = size() ? 2 * size() : 1;
         auto new_basic_ptr = alloc.allocate(expected_size);
-        
+
         // prepare to copy data
-        _size_of_cap = expected_size;                                  // 
+        _size_of_cap = expected_size;
 
         // copy existed data to new destination
         for(_Size_t i = 0; i < _size_used; i++)
         {
-            new_basic_ptr[i] = std::move<T>(_basic_ptr[i]);
+            new_basic_ptr[i] = std::move(_basic_ptr[i]);
         }
 
         // delete the older storage
         delete[] _basic_ptr;
         _basic_ptr = new_basic_ptr;
     }
+
+    // to make complier happy
+    #if __cplusplus < 201703L
+        template<typename T, typename _Size_t>
+        std::allocator<T> Vector<T, _Size_t>::alloc = std::allocator<T>();
+    #endif /*__cplusplus < 201703L*/
 }
 
 #endif /*__BDS_VECTOR_CAPACITY_IMPL_H*/

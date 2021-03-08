@@ -7,9 +7,6 @@
 #ifndef __BDS_VECTOR_READDATA_IMPL_H
 #define __BDS_VECTOR_READDATA_IMPL_H
 
-#include <stdexcept>
-#include <type_traits>
-
 #pragma once
 
 #include "../vector.h"
@@ -26,6 +23,12 @@ namespace dsa
 
     template<typename T, typename _Size_t>
     T& Vector<T, _Size_t>::operator[](const _Size_t& idx)
+    {
+        return _basic_ptr[idx];
+    }
+
+    template<typename T, typename _Size_t>
+    const T& Vector<T, _Size_t>::operator[](const _Size_t& idx) const
     {
         return _basic_ptr[idx];
     }

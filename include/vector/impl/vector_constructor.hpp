@@ -1,5 +1,5 @@
 /**
- * @FILE    implementation for constructors and deconstructors of Vector
+ * @FILE    implementation for constructors and destructors of Vector
  * @AUTHOR  Stephen Zhang
  * @DATE    2021-03-03
  */
@@ -16,9 +16,9 @@ namespace dsa
 {
     template<typename T, typename _Size_t>
     Vector<T, _Size_t>::Vector(const _Size_t& length)
-        : _size_of_cap(length)
-    {   
-        _basic_ptr = new value_type[_size_of_cap];
+        : _size_of_cap(length), _basic_ptr(nullptr)
+    {
+
     }
 
     template<typename T, typename _Size_t>
@@ -36,17 +36,17 @@ namespace dsa
     }
 
     template<typename T, typename _Size_t>
-    Vector<T, _Size_t>::Vector(const Vector& v):
-        _size_of_cap(v._size), _size_used(v._size_used)
+    Vector<T, _Size_t>::Vector(const Vector& v)
+        : _size_of_cap(v._size_of_cap), _size_used(v._size_used)
     {
         _basic_ptr = new value_type[_size_of_cap];
 
-        for(size_type i = 0; i < _size_of_cap; i++) { _basic_ptr[i] = v[i]; }
+        for(size_type i = 0; i < _size_used; i++) { _basic_ptr[i] = v[i]; }
     }
 
     template<typename T, typename _Size_t>
-    Vector<T, _Size_t>::Vector(Vector&& v):
-        _basic_ptr(v._basic_ptr), _size_of_cap(v._size), _size_used(v._size_used)
+    Vector<T, _Size_t>::Vector(Vector&& v)
+        : _basic_ptr(v._basic_ptr), _size_of_cap(v._size_of_cap), _size_used(v._size_used)
     {
         v._basic_ptr = nullptr;
     }
@@ -64,7 +64,7 @@ namespace dsa
     Vector<T, _Size_t>& Vector<T, _Size_t>::operator=(const Vector& v)
     {
         if(this == &v) { return *this; }
-        
+
         this = new Vector<T, _Size_t>(v);
         return *this;
     }

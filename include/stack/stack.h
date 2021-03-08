@@ -8,7 +8,7 @@
 #define __BDS_STACK_H
 
 #include "../vector/vector.h"
-#include <vector>
+#include <cstdint>
 
 namespace dsa
 {
@@ -17,15 +17,16 @@ namespace dsa
     {
     public:
         Stack(void);
-        Stack(const Stack& s);
-        Stack(Stack&& s);
-        ~Stack(void);
+        ~Stack(void) = default;
 
+        template<typename... Args>
+        void push(Args&&... args);
         void push(const T& value);
-        T& pop(const T& value);
+        void pop(T& value);
         T& top(void);
-        T& drop(void);
+        void drop(void);
         bool empty(void);
+        uint32_t depth(void);
 
     private:
         Vector<T> _basic_storage;

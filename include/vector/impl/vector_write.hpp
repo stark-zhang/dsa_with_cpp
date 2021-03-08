@@ -7,11 +7,11 @@
 #ifndef __BDS_VECTOR_WRITEDATA_IMPL_H
 #define __BDS_VECTOR_WRITEDATA_IMPL_H
 
-#include <utility>
 #pragma once
 
 #include "../vector.h"
 #include "vector_iterator.hpp"
+#include <utility>
 
 namespace dsa
 {
@@ -20,7 +20,7 @@ namespace dsa
     {
         reserve();
 
-        _basic_ptr[_size_used] = val;
+        _basic_ptr[_size_used] = std::move(val);
         _size_used++;
     }
 
@@ -115,6 +115,8 @@ namespace dsa
         std::construct_at
         #endif /*__cplusplus <= 201703L*/
             (_basic_ptr + _size_used, std::forward<Args>(args)...);
+
+        _size_used++;
     }
 
     template<typename T, typename _Size_t>

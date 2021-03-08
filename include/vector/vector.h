@@ -26,6 +26,8 @@ namespace dsa
         // type re-definition
         using value_type = T;
         using size_type = _Size_t;
+        using alloc_type = typename std::allocator<T>;
+        using alloc_traits = typename std::allocator_traits<alloc_type>;
         
     class iterator
     #if __cplusplus <= 201703L      // for cpp17 and before
@@ -77,7 +79,8 @@ namespace dsa
         // reloading for some operators
         Vector& operator=(const Vector& v);
         Vector& operator=(Vector&& v);
-        value_type& operator[](const _Size_t& idx);
+        value_type& operator[](const size_type& idx);
+        const value_type& operator[](const size_type& idx) const;
 
         // public function member for accessing data
         value_type& at(const size_type& idx);
@@ -111,6 +114,9 @@ namespace dsa
         size_type _size_of_cap = INITIAL_VECTOR_SIZE;               // allocated memory size
         size_type _size_used = 0;                                   // used memory size
         const size_t _max_size = (1 << 30) - 1;                     // max capacity of Vector
+        #if __cplusplus >= 201703L
+            inline
+        #endif /*__cplusplus >= 201703L*/
         static std::allocator<value_type> alloc;
 
         // private function members
